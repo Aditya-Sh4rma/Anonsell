@@ -18,6 +18,15 @@ async def cancel_dl(_, query: types.CallbackQuery):
     await tg.cancel(query)
 
 
+@app.on_callback_query(filters.regex("^close_play") & ~app.bl_users)
+@lang.language()
+async def _close_play(_, query: types.CallbackQuery):
+    try:
+        await query.message.delete()
+    except Exception:
+        pass
+
+
 @app.on_callback_query(filters.regex("controls") & ~app.bl_users)
 @lang.language()
 @can_manage_vc
@@ -114,11 +123,13 @@ async def _controls(_, query: types.CallbackQuery):
                 flags=re.DOTALL,
             )
             keyboard = buttons.controls(
-                chat_id, status=status if action != "resume" else None
+                chat_id,
+                status=status if action != "resume" else None,
+                _lang=query.lang,
             )
-        await query.edit_message_text(
-            f"{mtext}\n\n<blockquote>{reply}</blockquote>", reply_markup=keyboard
-        )
+            await query.edit_message_text(
+                f"{mtext}\n\n<blockquote>{reply}</blockquote>", reply_markup=keyboard
+            )
     except Exception:
         pass
 
