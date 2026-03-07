@@ -1,5 +1,6 @@
 {
     "add_me": "グループに追加してください",
+    "add_me_short": "Add Me",
     "admin_required": "ボットが機能するには<b>リンク経由でユーザーを招待する</b>権限が必要です。",
     "admin_cache_wait": "管理者キャッシュは10分に1回しか更新できません。",
     "admin_cache_reloading": "管理者キャッシュをリロードしています...",
