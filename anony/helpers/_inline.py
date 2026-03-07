@@ -94,14 +94,15 @@ class Inline:
         return self.ikm([[self.ikb(text=text, url=config.SUPPORT_CHAT)]])
 
     def play_queued(
-        self, chat_id: int, item_id: str, _text: str
+        self, chat_id: int, _lang: dict = None
     ) -> types.InlineKeyboardMarkup:
+        _add_text = _lang["add_me"] if _lang else "Add Me In Your Group"
+        _close_text = _lang["close"] if _lang else "Close"
         return self.ikm(
             [
                 [
-                    self.ikb(
-                        text=_text, callback_data=f"controls force {chat_id} {item_id}"
-                    )
+                    self.ikb(text=_add_text, url=f"https://t.me/{app.username}?startgroup=promo"),
+                    self.ikb(text=_close_text, callback_data=f"close_play {chat_id}"),
                 ]
             ]
         )
