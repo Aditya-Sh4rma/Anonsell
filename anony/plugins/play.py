@@ -20,6 +20,7 @@ def playlist_to_queue(chat_id: int, tracks: list) -> str:
     text = text[:1948] + "</blockquote>"
     return text
 
+
 @app.on_message(
     filters.command(["play", "playforce", "vplay", "vplayforce"])
     & filters.group
@@ -103,9 +104,7 @@ async def play_hndlr(
                     file.duration,
                     m.from_user.mention,
                 ),
-                reply_markup=buttons.play_queued(
-                    m.chat.id, file.id, m.lang["play_now"]
-                ),
+                reply_markup=buttons.play_queued(m.chat.id, m.lang),
             )
             if tracks:
                 added = playlist_to_queue(m.chat.id, tracks)
