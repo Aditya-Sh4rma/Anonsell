@@ -1,5 +1,6 @@
 {
     "add_me": "Agrégame a tu grupo",
+    "owner": "Owner",
     "add_me_short": "Add Me",
     "admin_required": "El bot requiere el permiso de <b>invitar usuarios a través del enlace</b> para funcionar.",
     "admin_cache_wait": "Solo puedes actualizar la memoria caché de administrador una vez cada 10 minutos.",
