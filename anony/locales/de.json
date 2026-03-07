@@ -1,5 +1,6 @@
 {
     "add_me": "Füge mich deiner Gruppe hinzu",
+    "owner": "Owner",
     "add_me_short": "Add Me",
     "admin_required": "Der Bot benötigt die Berechtigung <b>Benutzer über einen Link einladen</b>, um zu funktionieren.",
     "admin_cache_wait": "Du kannst den Admin-Cache nur alle 10 Minuten aktualisieren.",
