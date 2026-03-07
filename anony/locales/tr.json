@@ -1,5 +1,6 @@
 {
     "add_me": "Beni grubuna ekle",
+    "owner": "Owner",
     "add_me_short": "Add Me",
     "admin_required": "Botun çalışması için <b>bağlantı ile kullanıcı davet et</b> iznine ihtiyacı var.",
     "admin_cache_wait": "Yönetici önbelleğini yalnızca 10 dakikada bir yenileyebilirsin.",
