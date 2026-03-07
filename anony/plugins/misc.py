@@ -85,11 +85,12 @@ async def update_timer(length=10):
                 if not timer and not remove:
                     continue
 
+                _lang = await lang.get_lang(chat_id)
                 await app.edit_message_reply_markup(
                     chat_id=chat_id,
                     message_id=message_id,
                     reply_markup=buttons.controls(
-                        chat_id=chat_id, timer=timer, remove=remove
+                        chat_id=chat_id, timer=timer, remove=remove, _lang=_lang
                     ),
                 )
             except asyncio.CancelledError:
@@ -112,7 +113,7 @@ async def vc_watcher(sleep=15):
                         chat_id=chat_id,
                         message_id=media.message_id,
                         reply_markup=buttons.controls(
-                            chat_id=chat_id, status=_lang["stopped"], remove=True
+                            chat_id=chat_id, status=_lang["stopped"], remove=True, _lang=_lang
                         ),
                     )
                     await anon.stop(chat_id)
