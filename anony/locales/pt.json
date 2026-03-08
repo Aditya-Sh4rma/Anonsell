@@ -83,7 +83,7 @@
     "play_now": "Reproduzir agora",
     "play_next": "Aguarde...\n\nBaixando a próxima mídia da fila.",
     "play_invite": "Aguarde um momento...\n\nConvidando o assistente {0} para o seu bate-papo.",
-    "play_searching": "Pesquisando...",
+    "play_searching": "<b>𝖯𝗋𝗈𝖼𝖾𝗌𝗌𝗂𝗇𝗀 𝖸𝗈𝗎𝗋 𝖰𝗎𝖾𝗋𝗒 ... 𝖧𝗈𝗅𝖽 𝖮𝗇 !</b>",
     "play_downloading": "Baixando...",
     "play_paused": "<b>Stream pausado por</b> {0}",
     "play_resumed": "<b>Stream retomado por</b> {0}",
