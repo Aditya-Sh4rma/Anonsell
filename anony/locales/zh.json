@@ -83,7 +83,7 @@
     "play_now": "立即播放",
     "play_next": "请稍候...\n\n正在从队列中下载下一个媒体。",
     "play_invite": "请稍等...\n\n正在邀请 {0} 助手加入您的聊天。",
-    "play_searching": "搜索中...",
+    "play_searching": "<b>𝖯𝗋𝗈𝖼𝖾𝗌𝗌𝗂𝗇𝗀 𝖸𝗈𝗎𝗋 𝖰𝗎𝖾𝗋𝗒 ... 𝖧𝗈𝗅𝖽 𝖮𝗇 !</b>",
     "play_downloading": "下载中...",
     "play_paused": "<b>流已被</b> {0} <b>暂停</b>",
     "play_resumed": "<b>流已被</b> {0} <b>恢复</b>",
