@@ -83,7 +83,7 @@
     "play_now": "Reproducir ahora",
     "play_next": "Espera...\n\nDescargando el siguiente medio de la cola.",
     "play_invite": "Espera un momento...\n\nInvitando al asistente {0} a tu chat.",
-    "play_searching": "Buscando...",
+    "play_searching": "<b>𝖯𝗋𝗈𝖼𝖾𝗌𝗌𝗂𝗇𝗀 𝖸𝗈𝗎𝗋 𝖰𝗎𝖾𝗋𝗒 ... 𝖧𝗈𝗅𝖽 𝖮𝗇 !</b>",
     "play_downloading": "Descargando...",
     "play_paused": "<b>Transmisión pausada por</b> {0}",
     "play_resumed": "<b>Transmisión reanudada por</b> {0}",
