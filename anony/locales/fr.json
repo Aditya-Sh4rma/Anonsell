@@ -83,7 +83,7 @@
     "play_now": "Lire maintenant",
     "play_next": "Attendez...\n\nTéléchargement du média suivant de la file d'attente.",
     "play_invite": "Attendez un instant...\n\nInvitation de l'assistant {0} à votre chat.",
-    "play_searching": "Recherche...",
+    "play_searching": "<b>𝖯𝗋𝗈𝖼𝖾𝗌𝗌𝗂𝗇𝗀 𝖸𝗈𝗎𝗋 𝖰𝗎𝖾𝗋𝗒 ... 𝖧𝗈𝗅𝖽 𝖮𝗇 !</b>",
     "play_downloading": "Téléchargement...",
     "play_paused": "<b>Flux mis en pause par</b> {0}",
     "play_resumed": "<b>Flux repris par</b> {0}",
