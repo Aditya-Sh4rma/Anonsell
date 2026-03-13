@@ -37,9 +37,9 @@ async def start(_, message: types.Message):
     if private:
         get_time = lambda s: (lambda r: (f"{r[-1]}, " if r[-1][:-4] != "0" else "") + ":".join(reversed(r[:-1])))([f"{v}{u}" for v, u in zip([s%60, (s//60)%60, (s//3600)%24, s//86400], ["s", "m", "h", "days"])])
         uptime = get_time(int(time.time() - boot))
-        cpu = psutil.cpu_percent(interval=0)
-        ram = psutil.virtual_memory().percent
-        storage = psutil.disk_usage("/").percent
+        cpu = f"{psutil.cpu_percent(interval=0)}%"
+        ram = f"{psutil.virtual_memory().percent}%"
+        storage = f"{psutil.disk_usage('/').percent}%"
         _text = message.lang["start_pm"].format(
             message.from_user.first_name,
             app.name,
@@ -99,3 +99,12 @@ async def _new_member(_, message: types.Message):
                 return
             await utils.send_log(message, True)
             await db.add_chat(message.chat.id)
+
+
+@app.on_message(filters.left_chat_member, group=8)
+@lang.language()
+async def _left_member(_, message: types.Message):
+    if message.left_chat_member.id == app.id:
+        _lang = await lang.get_lang(message.chat.id)
+        await utils.send_remove_log(message, _lang)
+        await db.rm_chat(message.chat.id)
