@@ -60,9 +60,9 @@ async def start(_, message: types.Message):
     )
 
     if private:
+        await utils.send_log(message)
         if await db.is_user(message.from_user.id):
             return
-        await utils.send_log(message)
         await db.add_user(message.from_user.id)
     else:
         if await db.is_chat(message.chat.id):
