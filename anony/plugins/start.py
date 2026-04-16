@@ -41,7 +41,7 @@ async def start(_, message: types.Message):
         ram = f"{psutil.virtual_memory().percent}%"
         storage = f"{psutil.disk_usage('/').percent}%"
         _text = message.lang["start_pm"].format(
-            message.from_user.first_name,
+            message.from_user.mention,
             app.name,
             uptime,
             storage,
