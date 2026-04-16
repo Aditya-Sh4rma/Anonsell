@@ -102,7 +102,7 @@
     "play_duration_limit": "Streams longer than {0} minutes are not allowed to play.",
     "play_queue_full": "The queue limit ({0}) has been reached. Please wait for the currently queued tracks to finish playing, then try again.",
     "play_invite_error": "Failed to invite assistant to the chat.\n\nReason: <code>{0}</code>",
-    "play_not_found": "<blockquote><emoji id=\"5258474669769497337\">❗️</emoji>Failed to process the query.</blockquote>\n\n<blockquote>If the issue persists, report it to the <a href={0}>support chat</a>.</blockquote>",
+    "play_not_found": "<blockquote><emoji id=\"5258474669769497337\">❗️</emoji>Failed to process the query.\n\nIf the issue persists, report it to the <a href={0}>support chat</a>.</blockquote>",
     "play_chat_invalid": "This bot can only be used in <b>supergroups</b>.\n\nTo convert your group to a supergroup, make the chat history <b>visible</b> once.\n\nLeaving this chat...",
     "play_user_invalid": "You're an anonymous admin.\n\nRevert back to user account.",
     "playlist_fetch": "Fetching the playlist...\n\nPlease hold on.",
