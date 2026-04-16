@@ -114,7 +114,7 @@
     "restarting": "Restarting...",
     "add_me_short": "Add Me",
     "restarted": "Restart in progress. Don't worry, it'll only take a few seconds… maybe.",
-    "start_pm": "<b>────「 {1} 」────</b>\n\n<b>Hᴏʟᴀᴀ {0} ! !</b>\n\n<b>I Aᴍ Tʜᴇ  Fᴀsᴛ Aɴᴅ Pᴏᴡᴇʀғᴜʟ Mᴜsɪᴄ Pʟᴀʏᴇʀ Bᴏᴛ Wɪᴛʜ Sᴏᴍᴇ Aᴡᴇsᴏᴍᴇ Fᴇᴀᴛᴜʀᴇs.</b>\n➖➖➖➖➖➖➖➖➖➖➖➖➖\n<b>➥Uᴘᴛɪᴍᴇ:</b> {2}\n<b>➥SᴇʀᴠᴇʀSᴛᴏʀᴀɢᴇ:</b> {3}\n<b>➥CPU Lᴏᴀᴅ:</b> {4}\n<b>➥RAM Cᴏɴsᴜᴘᴛɪᴏɴ:</b> {5}\n➖➖➖➖➖➖➖➖➖➖➖➖➖\n<b>Cʟɪᴄᴋ Oɴ Tʜᴇ Hᴇʟᴩ Bᴜᴛᴛᴏɴ Tᴏ Gᴇᴛ Iɴғᴏʀᴍᴀᴛɪᴏɴ Aʙᴏᴜᴛ Mʏ Mᴏᴅᴜʟᴇs Aɴᴅ Cᴏᴍᴍᴀɴᴅs.</b>",
+    "start_pm": "<blockquote><b>────「 {1} 」────</b></blockquote>\n<blockquote><b>Hᴏʟᴀᴀ {0} ! !</b></blockquote>\n<blockquote><b>I Aᴍ Tʜᴇ  Fᴀsᴛ Aɴᴅ Pᴏᴡᴇʀғᴜʟ Mᴜsɪᴄ Pʟᴀʏᴇʀ Bᴏᴛ Wɪᴛʜ Sᴏᴍᴇ Aᴡᴇsᴏᴍᴇ Fᴇᴀᴛᴜʀᴇs.</b>\n➖➖➖➖➖➖➖➖➖➖➖➖➖\n<b>➥Uᴘᴛɪᴍᴇ:</b> {2}\n<b>➥SᴇʀᴠᴇʀSᴛᴏʀᴀɢᴇ:</b> {3}\n<b>➥CPU Lᴏᴀᴅ:</b> {4}\n<b>➥RAM Cᴏɴsᴜᴘᴛɪᴏɴ:</b> {5}\n➖➖➖➖➖➖➖➖➖➖➖➖➖\n<b>Cʟɪᴄᴋ Oɴ Tʜᴇ Hᴇʟᴩ Bᴜᴛᴛᴏɴ Tᴏ Gᴇᴛ Iɴғᴏʀᴍᴀᴛɪᴏɴ Aʙᴏᴜᴛ Mʏ Mᴏᴅᴜʟᴇs Aɴᴅ Cᴏᴍᴍᴀɴᴅs.</b></blockquote>",
     "start_gp": "Hey,\nThis is {0}\n\n<u><b>A music player bot with some awesome and useful features.</b></u>",
     "start_settings": "<u><b>{0} settings</b></u>\n\nClick the buttons below to change this chat's current settings.",
     "stats_fetching": "Fetching stats...",
