@@ -23,7 +23,7 @@
     "dl_complete": "Download completed. Processing file...\n\nTime elapsed: {0}s",
     "dl_cancelling": "Hang on, cancelling the download now!",
     "dl_active": "Already downloading that file. Mind waiting?",
-    "dl_limit": "Failed to process the file. The maximum download limit is <b>200 MB</b>.",
+    "dl_limit": "Failed to process the file. The maximum download limit is <b>3 GB</b>.",
     "dl_progress": "<u><b>Downloading file</b></u>\n\n<b>Progress:</b> {0} / {1} [{2:.1f}%]\n<b>Speed:</b> {3}/s | <b>ETA:</b> {4}",
     "dl_not_found": "Download already cancelled.",
     "error_no_audio": "Moving to the next track...\n\nAudio source not found in the file.",
