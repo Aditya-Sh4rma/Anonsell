@@ -14,10 +14,11 @@ API_URL = os.environ.get("SHRUTI_API_URL", "https://api.shrutibots.site")
 API_KEY = os.environ.get("SHRUTI_API_KEY", "")
 
 DOWNLOAD_DIR = "downloads"
+MAX_RETRIES = 3
 
 
 async def _download_file(video_id: str, media_type: str) -> str | None:
-    ext = "mp4" if media_type == "video" else "mp3"
+    ext = "mp4" if media_type == "video" else "webm"
     os.makedirs(DOWNLOAD_DIR, exist_ok=True)
     file_path = os.path.join(DOWNLOAD_DIR, f"{video_id}.{ext}")
 
@@ -26,34 +27,42 @@ async def _download_file(video_id: str, media_type: str) -> str | None:
 
     timeout_sec = 600 if media_type == "video" else 300
 
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(
-                f"{API_URL}/download",
-                params={"url": video_id, "type": media_type, "api_key": API_KEY},
-                timeout=aiohttp.ClientTimeout(total=timeout_sec),
-            ) as resp:
-                if resp.status != 200:
-                    logger.warning(f"API download failed: HTTP {resp.status}")
-                    return None
-                with open(file_path, "wb") as f:
-                    async for chunk in resp.content.iter_chunked(131072):
-                        f.write(chunk)
-
-        if Path(file_path).exists() and os.path.getsize(file_path) > 0:
-            return file_path
-        return None
-
-    except asyncio.TimeoutError:
-        logger.warning(f"Download timed out for {video_id}")
-    except Exception as ex:
-        logger.warning(f"Download failed for {video_id}: {ex}")
-
-    if Path(file_path).exists():
+    for attempt in range(1, MAX_RETRIES + 1):
         try:
-            os.remove(file_path)
-        except Exception:
-            pass
+            async with aiohttp.ClientSession() as session:
+                async with session.get(
+                    f"{API_URL}/download",
+                    params={"url": video_id, "type": media_type, "api_key": API_KEY},
+                    timeout=aiohttp.ClientTimeout(total=timeout_sec),
+                ) as resp:
+                    if resp.status != 200:
+                        logger.warning(f"API download failed (attempt {attempt}/{MAX_RETRIES}): HTTP {resp.status}")
+                        if attempt < MAX_RETRIES:
+                            await asyncio.sleep(2 * attempt)
+                            continue
+                        return None
+                    with open(file_path, "wb") as f:
+                        async for chunk in resp.content.iter_chunked(131072):
+                            f.write(chunk)
+
+            if Path(file_path).exists() and os.path.getsize(file_path) > 0:
+                return file_path
+            return None
+
+        except asyncio.TimeoutError:
+            logger.warning(f"Download timed out (attempt {attempt}/{MAX_RETRIES}) for {video_id}")
+        except Exception as ex:
+            logger.warning(f"Download failed (attempt {attempt}/{MAX_RETRIES}) for {video_id}: {ex}")
+
+        if Path(file_path).exists():
+            try:
+                os.remove(file_path)
+            except Exception:
+                pass
+
+        if attempt < MAX_RETRIES:
+            await asyncio.sleep(2 * attempt)
+
     return None
 
 
