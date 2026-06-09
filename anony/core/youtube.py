@@ -14,7 +14,7 @@ API_URL = os.environ.get("SHRUTI_API_URL", "https://api.shrutibots.site")
 API_KEY = os.environ.get("SHRUTI_API_KEY", "")
 
 DOWNLOAD_DIR = "downloads"
-MAX_RETRIES = 3
+MAX_RETRIES = 1
 
 
 async def _download_file(video_id: str, media_type: str) -> str | None:
