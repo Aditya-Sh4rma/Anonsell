@@ -128,7 +128,7 @@ class TgCall(PyTgCalls):
         except exceptions.NoAudioSourceFound:
             await message.edit_text(_lang["error_no_audio"])
             await self.play_next(chat_id)
-        except (ConnectionError, ConnectionNotFound, TelegramServerError, TimeoutError):
+        except (ConnectionError, ConnectionNotFound, TelegramServerError):
             await self.stop(chat_id)
             await message.edit_text(_lang["error_tg_server"])
         except RTMPStreamingUnsupported:
@@ -153,10 +153,6 @@ class TgCall(PyTgCalls):
             return await self.replay(chat_id)
 
         media = queue.get_next(chat_id)
-
-        if not media:
-            return await self.stop(chat_id)
-
         try:
             if media.message_id:
                 await app.delete_messages(
@@ -168,15 +164,18 @@ class TgCall(PyTgCalls):
         except Exception:
             pass
 
+        if not media:
+            return await self.stop(chat_id)
+
         _lang = await lang.get_lang(chat_id)
         msg = await app.send_message(chat_id=chat_id, text=_lang["play_next"])
         if not media.file_path:
             media.file_path = await yt.download(media.id, video=media.video)
             if not media.file_path:
-                await msg.edit_text(
+                await self.stop(chat_id)
+                return await msg.edit_text(
                     _lang["error_no_file"].format(config.SUPPORT_CHAT)
                 )
-                return await self.play_next(chat_id)
 
         media.message_id = msg.id
         await self.play_media(chat_id, msg, media)
