@@ -11,91 +11,74 @@ from pyrogram import errors, filters, types
 from anony import app, db, lang
 
 
-broadcasting = False
+broadcasting = asyncio.Lock()
 
 @app.on_message(filters.command(["broadcast"]) & app.sudoers)
 @lang.language()
 async def _broadcast(_, message: types.Message):
-    global broadcasting
     if not message.reply_to_message:
         return await message.reply_text(message.lang["gcast_usage"])
 
-    if broadcasting:
+    if broadcasting.locked():
         return await message.reply_text(message.lang["gcast_active"])
 
     msg = message.reply_to_message
+    copy = "-copy" in message.command
     count, ucount = 0, 0
-    chats, groups, users = [], [], []
+    failed_lines = []  
+
     sent = await message.reply_text(message.lang["gcast_start"])
 
-    if "-nochat" not in message.command:
-        groups.extend(await db.get_chats())
-    if "-user" in message.command:
-        users.extend(await db.get_users())
+    async with broadcasting:
 
-    chats.extend(groups + users)
-    broadcasting = True
+        if "-nochat" not in message.command:
+            groups = list(await db.get_chats())
+            for chat in groups:
+                try:
+                    (
+                        await msg.copy(chat, reply_markup=msg.reply_markup)
+                        if copy
+                        else await msg.forward(chat)
+                    )
+                    count += 1
+                    await asyncio.sleep(0.1)
+                except errors.FloodWait as fw:
+                    await asyncio.sleep(fw.value + 10)
+                except Exception as ex:
+                    failed_lines.append(f"{chat} - {ex}")
+                    continue
 
-    await msg.forward(app.logger)
-    await (await app.send_message(
-        chat_id=app.logger, 
-        text=message.lang["gcast_log"].format(
-            message.from_user.id,
-            message.from_user.mention,
-            message.text,
-        )
-    )).pin(disable_notification=False)
-    await asyncio.sleep(5)
-
-    failed = ""
-    for chat in chats:
-        if not broadcasting:
-            await sent.edit_text(message.lang["gcast_stopped"].format(count, ucount))
-            break
-
-        try:
-            (
-                await msg.copy(chat, reply_markup=msg.reply_markup)
-                if "-copy" in message.text
-                else await msg.forward(chat)
-            )
-            if chat in groups:
-                count += 1
-            else:
-                ucount += 1
-            await asyncio.sleep(0.1)
-        except errors.FloodWait as fw:
-            await asyncio.sleep(fw.value + 30)
-        except Exception as ex:
-            failed += f"{chat} - {ex}\n"
-            continue
+        if "-user" in message.command:
+            users = list(await db.get_users())
+            for user in users:
+                try:
+                    (
+                        await msg.copy(user, reply_markup=msg.reply_markup)
+                        if copy
+                        else await msg.forward(user)
+                    )
+                    ucount += 1
+                    await asyncio.sleep(0.1)
+                except errors.FloodWait as fw:
+                    await asyncio.sleep(fw.value + 10)
+                except Exception as ex:
+                    failed_lines.append(f"{user} - {ex}")
+                    continue
 
     text = message.lang["gcast_end"].format(count, ucount)
-    if failed:
-        with open("errors.txt", "w") as f:
-            f.write(failed)
-        await message.reply_document(
-            document="errors.txt",
-            caption=text,
-        )
-        os.remove("errors.txt")
-    broadcasting = False
-    await sent.edit_text(text)
-
-
-@app.on_message(filters.command(["stop_gcast", "stop_broadcast"]) & app.sudoers)
-@lang.language()
-async def _stop_gcast(_, message: types.Message):
-    global broadcasting
-    if not broadcasting:
-        return await message.reply_text(message.lang["gcast_inactive"])
-
-    broadcasting = False
-    await (await app.send_message(
-        chat_id=app.logger,
-        text=message.lang["gcast_stop_log"].format(
-            message.from_user.id,
-            message.from_user.mention
-        )
-    )).pin(disable_notification=False)
-    await message.reply_text(message.lang["gcast_stop"])
+    if failed_lines:
+        try:
+            with open("errors.txt", "w") as f:
+                f.write("\n".join(failed_lines))
+            await message.reply_document(
+                document="errors.txt",
+                caption=text,
+            )
+        except Exception:
+            pass
+        try:
+            os.remove("errors.txt")
+        except Exception:
+            pass
+    else:
+        await sent.edit_text(text)
