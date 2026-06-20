@@ -10,21 +10,13 @@ from anony import logger
 from anony.helpers import Track, utils
 
 
-API_URL = os.environ.get("SHRUTI_API_URL", "https://api.shrutibots.site")
-API_KEY = os.environ.get("SHRUTI_API_KEY", "")
+DEVIL_API_URL = os.environ.get("DEVIL_API_URL", "")
+DEVIL_API_KEY = os.environ.get("DEVIL_API_KEY", "")
+
+SHRUTI_API_URL = os.environ.get("SHRUTI_API_URL", "https://api.shrutibots.site")
+SHRUTI_API_KEY = os.environ.get("SHRUTI_API_KEY", "")
 
 DOWNLOAD_DIR = "downloads"
-
-_session: aiohttp.ClientSession | None = None
-
-
-async def _get_session(timeout_sec: int = 300) -> aiohttp.ClientSession:
-    global _session
-    if _session is None or _session.closed:
-        _session = aiohttp.ClientSession(
-            timeout=aiohttp.ClientTimeout(total=timeout_sec)
-        )
-    return _session
 
 
 async def _download_file(video_id: str, media_type: str) -> str | None:
@@ -37,27 +29,47 @@ async def _download_file(video_id: str, media_type: str) -> str | None:
 
     timeout_sec = 600 if media_type == "video" else 300
 
+    if DEVIL_API_URL and DEVIL_API_KEY:
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(
+                    f"{DEVIL_API_URL}/download",
+                    params={"url": video_id, "type": media_type, "api_key": DEVIL_API_KEY},
+                    timeout=aiohttp.ClientTimeout(total=timeout_sec),
+                ) as resp:
+                    if resp.status == 200:
+                        with open(file_path, "wb") as f:
+                            async for chunk in resp.content.iter_chunked(131072):
+                                f.write(chunk)
+                        if Path(file_path).exists() and os.path.getsize(file_path) > 0:
+                            logger.info(f"{video_id}: devil api")
+                            return file_path
+        except Exception as ex:
+            logger.warning(f"{video_id}: devil failed: {ex}")
+
     try:
-        session = await _get_session(timeout_sec)
-        async with session.get(
-            f"{API_URL}/download",
-            params={"url": video_id, "type": media_type, "api_key": API_KEY},
-        ) as resp:
-            if resp.status != 200:
-                logger.warning(f"API download failed: HTTP {resp.status}")
-                return None
-            with open(file_path, "wb") as f:
-                async for chunk in resp.content.iter_chunked(131072):
-                    f.write(chunk)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                f"{SHRUTI_API_URL}/download",
+                params={"url": video_id, "type": media_type, "api_key": SHRUTI_API_KEY},
+                timeout=aiohttp.ClientTimeout(total=timeout_sec),
+            ) as resp:
+                if resp.status != 200:
+                    logger.warning(f"{video_id}: shruti failed: HTTP {resp.status}")
+                    return None
+                with open(file_path, "wb") as f:
+                    async for chunk in resp.content.iter_chunked(131072):
+                        f.write(chunk)
 
         if Path(file_path).exists() and os.path.getsize(file_path) > 0:
+            logger.info(f"{video_id}: shruti api")
             return file_path
         return None
 
     except asyncio.TimeoutError:
-        logger.warning(f"Download timed out for {video_id}")
+        logger.warning(f"{video_id}: shruti timeout")
     except Exception as ex:
-        logger.warning(f"Download failed for {video_id}: {ex}")
+        logger.warning(f"{video_id}: shruti failed: {ex}")
 
     if Path(file_path).exists():
         try:
@@ -105,7 +117,7 @@ class YouTube:
                     video=video,
                 )
         except Exception as ex:
-            logger.warning(f"YouTube search failed: {ex}")
+            logger.warning(f"search failed: {ex}")
         return None
 
     async def playlist(self, limit: int, user: str, url: str, video: bool) -> list[Track | None]:
@@ -127,7 +139,7 @@ class YouTube:
                 )
                 tracks.append(track)
         except Exception as ex:
-            logger.warning(f"YouTube playlist fetch failed: {ex}")
+            logger.warning(f"playlist failed: {ex}")
         return tracks
 
     async def download(self, video_id: str, video: bool = False) -> str | None:
