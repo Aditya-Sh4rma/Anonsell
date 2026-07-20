@@ -46,11 +46,7 @@ class Inline:
                 ]
             )
 
-        _add_text = _lang["add_me_play"] if _lang else "Add Me In Your Group"
         _close_text = _lang["close"] if _lang else "Close"
-        keyboard.append(
-            [self.ikb(text=_add_text, url=f"https://t.me/{app.username}?start=promo")]
-        )
         keyboard.append(
             [self.ikb(text=_close_text, callback_data=f"close_play {chat_id}")]
         )
